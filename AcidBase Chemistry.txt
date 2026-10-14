@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>酸と塩基の科学 - Acid-Base Chemistry Explorer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=M+PLUS+Rounded+1c:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'M PLUS Rounded 1c', 'Inter', sans-serif;
+        }
+        .custom-shadow {
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+        }
+        .chem-sub {
+            font-size: 0.75em;
+            vertical-align: sub;
+        }
+        .chem-sup {
+            font-size: 0.75em;
+            vertical-align: super;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 via-indigo-50 to-pink-50 min-h-screen text-slate-800">
+
+    <header class="bg-white/90 backdrop-blur-md border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center space-x-3">
+                <div class="bg-indigo-600 text-white p-3 rounded-2xl shadow-md">
+                    <i class="fa-solid fa-flask-vial text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold bg-gradient-to-r from-indigo-600 to-pink-600 bg-clip-text text-transparent" data-ja="酸と塩基 インタラクティブ学習" data-en="Acid-Base Interactive Lab">酸と塩基 インタラクティブ学習</h1>
+                    <p class="text-xs text-slate-500" data-ja="高校化学の基礎マスター" data-en="High School Chemistry Master">高校化学の基礎マスター</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-3">
+                <!-- Navigation Tabs -->
+                <nav class="flex bg-slate-100 p-1 rounded-xl text-sm font-medium">
+                    <button onclick="switchTab('learn')" id="btn-learn" class="px-4 py-2 rounded-lg transition bg-white text-indigo-600 shadow-sm" data-ja="学習" data-en="Learn">学習</button>
+                    <button onclick="switchTab('simulator')" id="btn-simulator" class="px-4 py-2 rounded-lg transition text-slate-600 hover:text-slate-900" data-ja="中和シミュレーター" data-en="Simulator">中和シミュレーター</button>
+                    <button onclick="switchTab('quiz')" id="btn-quiz" class="px-4 py-2 rounded-lg transition text-slate-600 hover:text-slate-900" data-ja="クイズ" data-en="Quiz">クイズ</button>
+                </nav>
+
+                <!-- Language Toggle -->
+                <button onclick="toggleLanguage()" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 px-3 py-2 rounded-xl font-bold text-sm transition border border-indigo-200 flex items-center gap-1.5">
+                    <i class="fa-solid fa-globe"></i>
+                    <span id="lang-label">EN / 日本語</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 py-8">
+
+        <section id="section-learn" class="space-y-8">
+            <div class="bg-white rounded-3xl p-6 md:p-8 custom-shadow border border-slate-100">
+                <div class="max-w-3xl">
+                    <span class="bg-indigo-100 text-indigo-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider" data-ja="基本概念" data-en="Core Concept">基本概念</span>
+                    <h2 class="text-2xl md:text-3xl font-bold mt-3 mb-4" data-ja="酸と塩基とは？ (Arrhenius & Brønsted-Lowry)" data-en="What are Acids and Bases?">酸と塩基とは？</h2>
+                    <p class="text-slate-600 leading-relaxed" data-ja="化学において、酸と塩基は私たちの身の回りや工業において極めて重要な物質です。アレニウスの定義とブレンステッド・ローリーの定義を学びましょう。" data-en="In chemistry, acids and bases are essential in everyday life and industry. Let's explore the Arrhenius and Brønsted-Lowry definitions.">化学において、酸と塩基は私たちの身の回りや工業において極めて重要な物質です。アレニウスの定義とブレンステッド・ローリーの定義を学びましょう。</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+                    <!-- Acid Card -->
+                    <div class="bg-red-50/60 border border-red-200 rounded-2xl p-6 relative overflow-hidden">
+                        <div class="absolute -right-4 -bottom-4 text-red-100 text-8xl font-bold pointer-events-none">
+                            <i class="fa-solid fa-lemon"></i>
+                        </div>
+                        <div class="flex items-center space-x-3 mb-4">
+                            <div class="bg-red-500 text-white p-2.5 rounded-xl">
+                                <i class="fa-solid fa-fire text-lg"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-red-900" data-ja="酸 (Acid)" data-en="Acid">酸 (Acid)</h3>
+                        </div>
+                        <ul class="space-y-2 text-sm text-slate-700 mb-4">
+                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-red-500 mt-1"></i><span data-ja="水に溶けて水素イオン (H<span class='chem-sup'>+</span>) を生じる物質（アレニウス）" data-en="Produces hydrogen ions (H<span class='chem-sup'>+</span>) in water">水に溶けて水素イオン (H<span class="chem-sup">+</span>) を生じる物質</span></li>
+                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-red-500 mt-1"></i><span data-ja="味は酸っぱい（レモン、酢など）" data-en="Tastes sour (lemons, vinegar, etc.)">味は酸っぱい（レモン、酢など）</span></li>
+                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-red-500 mt-1"></i><span data-ja="青色リトマス紙を赤色に変える" data-en="Turns blue litmus paper red">青色リトマス紙を赤色に変える</span></li>
+                        </ul>
+                        <div class="bg-white/80 p-3 rounded-xl border border-red-100 text-xs font-mono text-red-800 space-y-1">
+                            <div>例: HCl → H<span class="chem-sup">+</span> + Cl<span class="chem-sup">-</span> (強酸)</div>
+                            <div>例: CH<span class="chem-sub">3</span>COOH ⇄ H<span class="chem-sup">+</span> + CH<span class="chem-sub">3</span>COO<span class="chem-sup">-</span> (弱酸)</div>
+                        </div>
+                    </div>
+
+                    <!-- Base Card -->
+                    <div class="bg-blue-50/60 border border-blue-200 rounded-2xl p-6 relative overflow-hidden">
+                        <div class="absolute -right-4 -bottom-4 text-blue-100 text-8xl font-bold pointer-events-none">
+                            <i class="fa-solid fa-soap"></i>
+                        </div>
+                        <div class="flex items-center space-x-3 mb-4">
+                            <div class="bg-blue-500 text-white p-2.5 rounded-xl">
+                                <i class="fa-solid fa-droplet text-lg"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-blue-900" data-ja="塩基・アルカリ (Base / Alkali)" data-en="Base / Alkali">塩基・アルカリ (Base / Alkali)</h3>
+                        </div>
+                        <ul class="space-y-2 text-sm text-slate-700 mb-4">
+                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-blue-500 mt-1"></i><span data-ja="水に溶けて水酸化物イオン (OH<span class='chem-sup'>-</span>) を生じる物質" data-en="Produces hydroxide ions (OH<span class='chem-sup'>-</span>) in water">水に溶けて水酸化物イオン (OH<span class="chem-sup">-</span>) を生じる物質</span></li>
+                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-blue-500 mt-1"></i><span data-ja="苦味があり、触るとヌルヌルする（石鹸など）" data-en="Tastes bitter, slippery to touch">苦味があり、触るとヌルヌルする</span></li>
+                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-blue-500 mt-1"></i><span data-ja="赤色リトマス紙を青色に変える" data-en="Turns red litmus paper blue">赤色リトマス紙を青色に変える</span></li>
+                        </ul>
+                        <div class="bg-white/80 p-3 rounded-xl border border-blue-100 text-xs font-mono text-blue-800 space-y-1">
+                            <div>例: NaOH → Na<span class="chem-sup">+</span> + OH<span class="chem-sup">-</span> (強塩基)</div>
+                            <div>例: NH<span class="chem-sub">3</span> + H<span class="chem-sub">2</span>O ⇄ NH<span class="chem-sub">4</span><span class="chem-sup">+</span> + OH<span class="chem-sup">-</span> (弱塩基)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- pH Scale Interactive Visualizer -->
+            <div class="bg-white rounded-3xl p-6 md:p-8 custom-shadow border border-slate-100">
+                <h3 class="text-xl font-bold mb-2" data-ja="pHスケールと液性" data-en="pH Scale and Acidity">pHスケールと液性</h3>
+                <p class="text-slate-600 text-sm mb-6" data-ja="pHは水素イオン濃度指数です。7が中性、7未満が酸性、7より大きいと塩基性（アルカリ性）を示します。" data-en="pH measures hydrogen ion concentration. 7 is neutral, <7 is acidic, >7 is basic.">pHは水素イオン濃度指数です。7が中性、7未満が酸性、7より大きいと塩基性を示します。</p>
+
+                <!-- Gradient Bar -->
+                <div class="relative h-12 rounded-2xl overflow-hidden mb-6 flex shadow-inner">
+                    <div class="flex-1 bg-red-600 flex items-center justify-center text-white font-bold text-xs">pH 0</div>
+                    <div class="flex-1 bg-red-400 flex items-center justify-center text-white font-bold text-xs">3</div>
+                    <div class="flex-1 bg-yellow-400 flex items-center justify-center text-slate-800 font-bold text-xs">6</div>
+                    <div class="flex-1 bg-green-500 flex items-center justify-center text-white font-bold text-xs">7</div>
+                    <div class="flex-1 bg-teal-400 flex items-center justify-center text-slate-800 font-bold text-xs">9</div>
+                    <div class="flex-1 bg-blue-500 flex items-center justify-center text-white font-bold text-xs">11</div>
+                    <div class="flex-1 bg-indigo-700 flex items-center justify-center text-white font-bold text-xs">14</div>
+                </div>
+
+                <!-- Common Examples Grid -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                    <div class="bg-red-50 p-4 rounded-2xl border border-red-100 text-center">
+                        <div class="text-red-600 font-bold text-lg">pH 1 - 2</div>
+                        <div class="text-sm font-medium mt-1" data-ja="塩酸・胃酸" data-en="Hydrochloric Acid">塩酸・胃酸</div>
+                        <div class="text-xs text-slate-500 mt-0.5" data-ja="強い酸性" data-en="Strong Acid">強い酸性</div>
+                    </div>
+                    <div class="bg-orange-50 p-4 rounded-2xl border border-orange-100 text-center">
+                        <div class="text-orange-600 font-bold text-lg">pH 3 - 4</div>
+                        <div class="text-sm font-medium mt-1" data-ja="レモン・お酢" data-en="Lemon / Vinegar">レモン・お酢</div>
+                        <div class="text-xs text-slate-500 mt-0.5" data-ja="弱い酸性" data-en="Weak Acid">弱い酸性</div>
+                    </div>
+                    <div class="bg-green-50 p-4 rounded-2xl border border-green-100 text-center">
+                        <div class="text-green-600 font-bold text-lg">pH 7</div>
+                        <div class="text-sm font-medium mt-1" data-ja="純水" data-en="Pure Water">純水</div>
+                        <div class="text-xs text-slate-500 mt-0.5" data-ja="中性" data-en="Neutral">中性</div>
+                    </div>
+                    <div class="bg-blue-50 p-4 rounded-2xl border border-blue-100 text-center">
+                        <div class="text-blue-600 font-bold text-lg">pH 12 - 13</div>
+                        <div class="text-sm font-medium mt-1" data-ja="水酸化ナトリウム・石鹸" data-en="NaOH / Soap">水酸化ナトリウム</div>
+                        <div class="text-xs text-slate-500 mt-0.5" data-ja="強い塩基性" data-en="Strong Base">強い塩基性</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="section-simulator" class="hidden space-y-8">
+            <div class="bg-white rounded-3xl p-6 md:p-8 custom-shadow border border-slate-100">
+                <div class="max-w-3xl mb-6">
+                    <span class="bg-pink-100 text-pink-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider" data-ja="中和反応モデル" data-en="Neutralization Model">中和反応モデル</span>
+                    <h2 class="text-2xl md:text-3xl font-bold mt-3 mb-2" data-ja="酸と塩基の混合実験シミュレーター" data-en="Acid-Base Mixing Simulator">酸と塩基の混合実験シミュレーター</h2>
+                    <p class="text-slate-600 text-sm" data-ja="酸 (H<span class='chem-sup'>+</span>) と塩基 (OH<span class='chem-sup'>-</span>) を混合して、中和によって水 (H<span class='chem-sub'>2</span>O) と塩 (Salt) が生成される分子レベルの様子を観察しましょう。" data-en="Mix acids and bases to observe the molecular-level generation of water and salt through neutralization.">酸 (H<span class="chem-sup">+</span>) と塩基 (OH<span class="chem-sup">-</span>) を混合して、中和反応を観察しましょう。</p>
+                </div>
+
+                <!-- Controls -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 bg-slate-50 p-6 rounded-2xl border border-slate-200 mb-8">
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-2" data-ja="酸の種類 (Acid)" data-en="Acid Type">酸の種類 (Acid)</label>
+                        <select id="sim-acid" class="w-full bg-white border border-slate-300 rounded-xl px-4 py-2.5 text-sm font-medium focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                            <option value="HCl">塩酸 (HCl)</option>
+                            <option value="CH3COOH">酢酸 (CH<span class="chem-sub">3</span>COOH)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-2" data-ja="塩基の種類 (Base)" data-en="Base Type">塩基の種類 (Base)</label>
+                        <select id="sim-base" class="w-full bg-white border border-slate-300 rounded-xl px-4 py-2.5 text-sm font-medium focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                            <option value="NaOH">水酸化ナトリウム (NaOH)</option>
+                            <option value="NH3">アンモニア (NH<span class="chem-sub">3</span>)</option>
+                        </select>
+                    </div>
+                    <div class="flex items-end">
+                        <button onclick="runNeutralization()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 px-6 rounded-xl shadow-md transition flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-flask"></i>
+                            <span data-ja="混合する (Mix)" data-en="Mix Solutions">混合する</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Simulation Visual Area -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Beaker Canvas/Graphic -->
+                    <div class="lg:col-span-2 bg-gradient-to-b from-slate-900 to-slate-800 rounded-3xl p-6 text-white flex flex-col items-center justify-center relative min-h-[320px] overflow-hidden shadow-inner">
+                        <div class="absolute top-4 left-4 bg-white/10 backdrop-blur-md px-3 py-1 rounded-lg text-xs font-mono" id="sim-status-badge">
+                            Status: Ready to mix
+                        </div>
+
+                        <!-- Beaker Icon Container -->
+                        <div class="relative w-48 h-56 border-4 border-white/30 rounded-b-3xl border-t-0 flex flex-col justify-end p-2 bg-blue-500/10 backdrop-blur-sm" id="beaker-container">
+                            <div id="liquid-level" class="w-full bg-blue-400/40 rounded-b-2xl transition-all duration-700 flex flex-wrap content-end justify-center gap-2 p-3 overflow-hidden" style="height: 70%;">
+                                <!-- Ions injected here -->
+                            </div>
+                        </div>
+
+                        <div class="mt-4 text-center">
+                            <div id="ph-display" class="text-xl font-bold font-mono text-green-400">pH: 7.0 (中性)</div>
+                            <p class="text-xs text-slate-400 mt-1" data-ja="水分子 (H<span class='chem-sub'>2</span>O) と塩 (Salt) が生成されました" data-en="Water and Salt generated">水分子と塩が生成されました</p>
+                        </div>
+                    </div>
+
+                    <!-- Reaction Summary Panel -->
+                    <div class="bg-slate-50 border border-slate-200 rounded-3xl p-6 flex flex-col justify-between">
+                        <div>
+                            <h4 class="font-bold text-slate-800 mb-3" data-ja="化学反応式" data-en="Chemical Equation">化学反応式</h4>
+                            <div id="equation-box" class="bg-white p-4 rounded-2xl border border-slate-200 text-sm font-mono text-indigo-700 mb-4 shadow-sm">
+                                HCl + NaOH → NaCl + H<span class="chem-sub">2</span>O
+                            </div>
+                            <h4 class="font-bold text-slate-800 mb-2" data-ja="イオンの動き" data-en="Ion Behavior">イオンの動き</h4>
+                            <p id="ion-explanation" class="text-xs text-slate-600 leading-relaxed" data-ja="酸からの H<span class='chem-sup'>+</span> と塩基からの OH<span class='chem-sup'>-</span> が結合して水 H<span class='chem-sub'>2</span>O が生じます。" data-en="H+ from acid and OH- from base combine to form water.">
+                                酸からの H<span class="chem-sup">+</span> と塩基からの OH<span class="chem-sup">-</span> が結合して水 H<span class="chem-sub">2</span>O が生じます。
+                            </p>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-slate-200">
+                            <div class="flex justify-between text-xs text-slate-500 font-medium">
+                                <span data-ja="中和熱の発生" data-en="Neutralization Heat">中和熱の発生:</span>
+                                <span class="text-red-500 font-bold" data-ja="発熱反応 🔥" data-en="Exothermic 🔥">発熱反応 🔥</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="section-quiz" class="hidden space-y-8">
+            <div class="bg-white rounded-3xl p-6 md:p-8 custom-shadow border border-slate-100 max-w-3xl mx-auto">
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <span class="bg-purple-100 text-purple-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider" data-ja="理解度テスト" data-en="Knowledge Quiz">理解度テスト</span>
+                        <h2 class="text-2xl font-bold mt-2" data-ja="酸・塩基チェッククイズ" data-en="Acid-Base Quiz">酸・塩基チェッククイズ</h2>
+                    </div>
+                    <div id="quiz-progress" class="text-sm font-bold text-slate-500">Question 1 / 4</div>
+                </div>
+
+                <!-- Quiz Card Container -->
+                <div id="quiz-card" class="space-y-6">
+                    <h3 id="quiz-question" class="text-lg font-bold text-slate-800">問題文がここに表示されます</h3>
+                    <div id="quiz-options" class="space-y-3">
+                        <!-- Options injected via JS -->
+                    </div>
+                </div>
+
+                <!-- Feedback & Next Button -->
+                <div id="quiz-footer" class="mt-6 pt-6 border-t border-slate-100 flex justify-between items-center hidden">
+                    <p id="quiz-feedback" class="font-bold text-sm"></p>
+                    <button onclick="nextQuestion()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 px-6 rounded-xl shadow-md transition" data-ja="次の問題へ" data-en="Next Question">次の問題へ</button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        let currentLang = 'ja';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'ja' ? 'en' : 'ja';
+            document.getElementById('lang-label').innerText = currentLang === 'ja' ? 'EN / 日本語' : '日本語 / EN';
+            
+            // Toggle all translatable elements
+            document.querySelectorAll('[data-ja]').forEach(el => {
+                const text = el.getAttribute(`data-${currentLang}`);
+                if (text) el.innerHTML = text;
+            });
+
+            // Update dynamic elements
+            runNeutralization();
+            loadQuiz();
+        }
+
+        function switchTab(tab) {
+            ['learn', 'simulator', 'quiz'].forEach(t => {
+                document.getElementById(`section-${t}`).classList.add('hidden');
+                document.getElementById(`btn-${t}`).className = 'px-4 py-2 rounded-lg transition text-slate-600 hover:text-slate-900';
+            });
+            document.getElementById(`section-${tab}`).classList.remove('hidden');
+            document.getElementById(`btn-${tab}`).className = 'px-4 py-2 rounded-lg transition bg-white text-indigo-600 shadow-sm font-bold';
+        }
+
+        // Neutralization Simulation Logic
+        function runNeutralization() {
+            const acid = document.getElementById('sim-acid').value;
+            const base = document.getElementById('sim-base').value;
+            const liquid = document.getElementById('liquid-level');
+            const phDisplay = document.getElementById('ph-display');
+            const statusBadge = document.getElementById('sim-status-badge');
+            const equationBox = document.getElementById('equation-box');
+            const ionExp = document.getElementById('ion-explanation');
+
+            liquid.innerHTML = '';
+            let html = '';
+            let eqText = '';
+            let ionText = '';
+            let phText = '';
+
+            if (acid === 'HCl' && base === 'NaOH') {
+                eqText = `HCl + NaOH → NaCl + H<span class="chem-sub">2</span>O`;
+                ionText = currentLang === 'ja' ? '強酸 (HCl) と強塩基 (NaOH) の中和。完全に電離し、中性 (pH 7) の塩化ナトリウム水溶液になります。' : 'Neutralization of strong acid and strong base, forming neutral salt solution (pH 7).';
+                phText = currentLang === 'ja' ? 'pH: 7.0 (中性)' : 'pH: 7.0 (Neutral)';
+                
+                for(let i=0; i<4; i++) {
+                    html += `<span class="bg-blue-300 text-slate-900 px-2 py-1 rounded text-xs font-bold shadow">Na<span class="chem-sup">+</span></span>`;
+                    html += `<span class="bg-green-300 text-slate-900 px-2 py-1 rounded text-xs font-bold shadow">Cl<span class="chem-sup">-</span></span>`;
+                    html += `<span class="bg-slate-200 text-slate-900 px-2 py-1 rounded text-xs font-bold shadow">H<span class="chem-sub">2</span>O</span>`;
+                }
+            } else if (acid === 'CH3COOH' && base === 'NaOH') {
+                eqText = `CH<span class="chem-sub">3</span>COOH + NaOH → CH<span class="chem-sub">3</span>COONa + H<span class="chem-sub">2</span>O`;
+                ionText = currentLang === 'ja' ? '弱酸 (CH<span class="chem-sub">3</span>COOH) と強塩基 (NaOH) の中和。生成する酢酸ナトリウムが加水分解するため、弱塩基性 (pH > 7) を示します。' : 'Weak acid and strong base neutralization, resulting in a weakly basic salt solution (pH > 7).';
+                phText = currentLang === 'ja' ? 'pH: 8.5 (弱塩基性)' : 'pH: 8.5 (Weakly Basic)';
+
+                for(let i=0; i<4; i++) {
+                    html += `<span class="bg-blue-300 text-slate-900 px-2 py-1 rounded text-xs font-bold shadow">Na<span class="chem-sup">+</span></span>`;
+                    html += `<span class="bg-amber-300 text-slate-900 px-2 py-1 rounded text-xs font-bold shadow">CH<span class="chem-sub">3</span>COO<span class="chem-sup">-</span></span>`;
+                    html += `<span class="bg-slate-200 text-slate-900 px-2 py-1 rounded text-xs font-bold shadow">H<span class="chem-sub">2</span>O</span>`;
+                }
+            } else if (acid === 'HCl' && base === 'NH3') {
+                eqText = `HCl + NH<span class="chem-sub">3</span> → NH<span class="chem-sub">4</span>Cl`;
+                ionText = currentLang === 'ja' ? '強酸 (HCl) と弱塩基 (NH<span class="chem-sub">3</span>) の中和。塩化アンモニウムが生じ、酸性 (pH < 7) を示します。' : 'Strong acid and weak ammonia base, forming acidic ammonium chloride (pH < 7).';
+                phText = currentLang === 'ja' ? 'pH: 5.2 (弱酸性)' : 'pH: 5.2 (Weakly Acidic)';
+
+                for(let i=0; i<4; i++) {
+                    html += `<span class="bg-purple-300 text-slate-900 px-2 py-1 rounded text-xs font-bold shadow">NH<span class="chem-sub">4</span><span class="chem-sup">+</span></span>`;
+                    html += `<span class="bg-green-300 text-slate-900 px-2 py-1 rounded text-xs font-bold shadow">Cl<span class="chem-sup">-</span></span>`;
+                }
+            } else {
+                eqText = `CH<span class="chem-sub">3</span>COOH + NH<span class="chem-sub">3</span> → CH<span class="chem-sub">3</span>COONH<span class="chem-sub">4</span>`;
+                ionText = currentLang === 'ja' ? '弱酸と弱塩基の中和反応です。' : 'Weak acid and weak base neutralization reaction.';
+                phText = currentLang === 'ja' ? 'pH: 7.0付近' : 'pH: ~7.0';
+
+                for(let i=0; i<4; i++) {
+                    html += `<span class="bg-purple-300 text-slate-900 px-2 py-1 rounded text-xs font-bold shadow">NH<span class="chem-sub">4</span><span class="chem-sup">+</span></span>`;
+                    html += `<span class="bg-amber-300 text-slate-900 px-2 py-1 rounded text-xs font-bold shadow">CH<span class="chem-sub">3</span>COO<span class="chem-sup">-</span></span>`;
+                }
+            }
+
+            liquid.innerHTML = html;
+            equationBox.innerHTML = eqText;
+            ionExp.innerHTML = ionText;
+            phDisplay.innerText = phText;
+            statusBadge.innerText = currentLang === 'ja' ? '状態: 中和完了' : 'Status: Neutralized';
+        }
+
+        // Quiz Data and Logic
+        const quizData = [
+            {
+                q: {
+                    ja: "アレニウスの定義において、水に溶けて水素イオン (H<span class='chem-sup'>+</span>) を生じる物質を何というか？",
+                    en: "In the Arrhenius definition, what is a substance that produces hydrogen ions (H<span class='chem-sup'>+</span>) in water called?"
+                },
+                options: {
+                    ja: ["酸 (Acid)", "塩基 (Base)", "塩 (Salt)", "酸化剤 (Oxidizing Agent)"],
+                    en: ["Acid", "Base", "Salt", "Oxidizing Agent"]
+                },
+                answer: 0
+            },
+            {
+                q: {
+                    ja: "pHが 7 より大きく、赤色リトマス紙を青色に変える水溶液の液性はどれか？",
+                    en: "What is the property of an aqueous solution with a pH greater than 7 that turns red litmus paper blue?"
+                },
+                options: {
+                    ja: ["酸性 (Acidic)", "中性 (Neutral)", "塩基性 / アルカリ性 (Basic)", "無機質"],
+                    en: ["Acidic", "Neutral", "Basic / Alkaline", "Inorganic"]
+                },
+                answer: 2
+            },
+            {
+                q: {
+                    ja: "塩酸 (HCl) と水酸化ナトリウム (NaOH) を中和させたとき生じる塩（えん）はどれか？",
+                    en: "What salt is produced when hydrochloric acid (HCl) is neutralized with sodium hydroxide (NaOH)?"
+                },
+                options: {
+                    ja: ["炭酸ナトリウム (Na<span class='chem-sub'>2</span>CO<span class='chem-sub'>3</span>)", "塩化ナトリウム (NaCl)", "硫酸バリウム (BaSO<span class='chem-sub'>4</span>)", "酢酸アンモニウム"],
+                    en: ["Sodium Carbonate", "Sodium Chloride (NaCl)", "Barium Sulfate", "Ammonium Acetate"]
+                },
+                answer: 1
+            },
+            {
+                q: {
+                    ja: "ブレンステッド・ローリーの定義において、相手からプロトン (H<span class='chem-sup'>+</span>) を受け取る物質はどれか？",
+                    en: "In the Brønsted-Lowry definition, a substance that accepts a proton (H<span class='chem-sup'>+</span>) from another is called a:"
+                },
+                options: {
+                    ja: ["酸 (Acid)", "塩基 (Base)", "触媒 (Catalyst)", "還元剤 (Reducing Agent)"],
+                    en: ["Acid", "Base", "Catalyst", "Reducing Agent"]
+                },
+                answer: 1
+            }
+        ];
+
+        let currentQuizIndex = 0;
+
+        function loadQuiz() {
+            const qObj = quizData[currentQuizIndex];
+            document.getElementById('quiz-progress').innerText = `Question ${currentQuizIndex + 1} / ${quizData.length}`;
+            document.getElementById('quiz-question').innerHTML = qObj.q[currentLang];
+            
+            const optionsContainer = document.getElementById('quiz-options');
+            optionsContainer.innerHTML = '';
+            
+            qObj.options[currentLang].forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'w-full text-left p-4 rounded-2xl border border-slate-200 hover:bg-indigo-50 hover:border-indigo-300 font-medium transition text-sm flex items-center justify-between';
+                btn.innerHTML = `<span>${opt}</span><i class="fa-solid fa-chevron-right text-slate-300"></i>`;
+                btn.onclick = () => checkAnswer(idx);
+                optionsContainer.appendChild(btn);
+            });
+
+            document.getElementById('quiz-footer').classList.add('hidden');
+        }
+
+        function checkAnswer(selectedIndex) {
+            const qObj = quizData[currentQuizIndex];
+            const optionsContainer = document.getElementById('quiz-options');
+            const buttons = optionsContainer.getElementsByTagName('button');
+            
+            for(let i=0; i<buttons.length; i++) {
+                buttons[i].disabled = true;
+                if(i === qObj.answer) {
+                    buttons[i].className = 'w-full text-left p-4 rounded-2xl border border-green-300 bg-green-50 font-medium text-green-800 text-sm flex items-center justify-between';
+                } else if(i === selectedIndex) {
+                    buttons[i].className = 'w-full text-left p-4 rounded-2xl border border-red-300 bg-red-50 font-medium text-red-800 text-sm flex items-center justify-between';
+                }
+            }
+
+            const feedback = document.getElementById('quiz-feedback');
+            if(selectedIndex === qObj.answer) {
+                feedback.innerText = currentLang === 'ja' ? '正解です！素晴らしい 🎉' : 'Correct! Excellent 🎉';
+                feedback.className = 'font-bold text-sm text-green-600';
+            } else {
+                feedback.innerText = currentLang === 'ja' ? '不正解です。解説を確認しましょう。' : 'Incorrect. Review the concepts.';
+                feedback.className = 'font-bold text-sm text-red-600';
+            }
+
+            document.getElementById('quiz-footer').classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            currentQuizIndex++;
+            if(currentQuizIndex >= quizData.length) {
+                currentQuizIndex = 0;
+            }
+            loadQuiz();
+        }
+
+        // Initialize on load
+        window.onload = function() {
+            runNeutralization();
+            loadQuiz();
+        };
+    </script>
+</body>
+</html>
+
